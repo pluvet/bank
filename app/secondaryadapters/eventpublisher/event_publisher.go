@@ -1,16 +1,14 @@
-package secondary_adapters
+package eventpublisher
 
 import (
 	"fmt"
 	"sync"
+
+	"github.com/pluvet/bank/app/core"
 )
 
-type Event interface {
-	GetName() string
-}
-
 type Handler interface {
-	HandleEvent(Event) error
+	HandleEvent(core.Event) error
 }
 
 type EventPublisher struct {
@@ -23,13 +21,13 @@ func NewEventPublisher(handlers map[string][]Handler) *EventPublisher {
 	return eventPublisher
 }
 
-func (e *EventPublisher) NewEvent(event Event) bool {
+func (e *EventPublisher) NewEvent(event core.Event) bool {
 	eventWasPublished := make(chan bool)
 	go e.processEvent(event, eventWasPublished)
 	return <-eventWasPublished
 }
 
-func (e *EventPublisher) processEvent(event Event, eventWasPublished chan bool) {
+func (e *EventPublisher) processEvent(event core.Event, eventWasPublished chan bool) {
 	var wg sync.WaitGroup
 	eventHandlers := e.handlers[event.GetName()]
 	for i := range eventHandlers {
@@ -40,7 +38,7 @@ func (e *EventPublisher) processEvent(event Event, eventWasPublished chan bool) 
 	wg.Wait()
 }
 
-func (e *EventPublisher) handleEvent(handler Handler, event Event, wg *sync.WaitGroup) {
+func (e *EventPublisher) handleEvent(handler Handler, event core.Event, wg *sync.WaitGroup) {
 	defer wg.Done()
 	wg.Add(1)
 	err := handler.HandleEvent(event)

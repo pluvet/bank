@@ -1,15 +1,15 @@
-package primary_ports
+package services
 
 import (
 	"fmt"
 
-	"github.com/pluvet/go-bank/app/core"
-	"github.com/pluvet/go-bank/app/secondary_ports/eventpublisher"
-	"github.com/pluvet/go-bank/app/secondary_ports/repositories"
+	"github.com/pluvet/bank/app/core"
+	"github.com/pluvet/bank/app/secondaryports/eventpublisher"
+	"github.com/pluvet/bank/app/secondaryports/repositories"
 )
 
 type CreateUserService struct {
-	repo           repositories.UserRepository
+	repo           repositories.IUserRepository
 	eventPublisher eventpublisher.EventPublisher
 }
 

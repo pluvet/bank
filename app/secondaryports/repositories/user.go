@@ -1,5 +1,5 @@
 package repositories
 
-type UserRepository interface {
+type IUserRepository interface {
 	CreateUser(string, string, string) (*int, error)
 }

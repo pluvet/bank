@@ -1,7 +1,7 @@
-package infraestructure
+package database
 
 import (
-	"github.com/pluvet/go-bank/app/secondary_adapters/models"
+	"github.com/pluvet/bank/app/secondaryadapters/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

@@ -4,6 +4,10 @@ import (
 	"reflect"
 )
 
+type Event interface {
+	GetName() string
+}
+
 type EventUserCreated struct {
 	UserID int
 }

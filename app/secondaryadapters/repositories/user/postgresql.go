@@ -1,13 +1,10 @@
 package user
 
 import (
-	"github.com/pluvet/go-bank/app/config"
-	"github.com/pluvet/go-bank/app/secondary_adapters/models"
+	"github.com/pluvet/bank/app/infraestructure/database"
+	"github.com/pluvet/bank/app/secondaryadapters/models"
+	"github.com/pluvet/bank/app/secondaryadapters/repositories/errors"
 )
-
-type IUserRepository interface {
-	CreateUser(string, string, string) (*int, error)
-}
 
 type UserRepository struct{}
 
@@ -18,11 +15,10 @@ func (u *UserRepository) CreateUser(name string, email string, password string) 
 	user.Email = email
 	user.Password = password
 
-	result := config.DB.Create(&user)
+	result := database.DB.Create(&user)
 
 	if result.Error != nil {
-		err := new(ErrorCreatingRecordInDB)
-		err.Model = "user"
+		err := new(errors.ErrorCreatingRecordInDB)
 		return nil, err
 	}
 
